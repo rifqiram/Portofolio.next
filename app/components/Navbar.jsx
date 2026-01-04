@@ -35,7 +35,9 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="fixed top-6 left-0 w-full z-[100] flex justify-center px-4">
+    <nav 
+      style={{ zIndex: 100 }} 
+      className="fixed top-6 left-0 w-full flex justify-center px-4">
       <div className={`
         flex items-center gap-2 md:gap-6 px-5 py-2.5 rounded-full border transition-all duration-500
         ${scrolled 
@@ -58,7 +60,12 @@ export default function Navbar() {
           >
             {item.label}
             {active === item.id && (
-              <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-cyan-400 shadow-[0_0_15px_#06b6d4] rounded-full" />
+              <span 
+                style={{ 
+                    height: "2px", 
+                    boxShadow: "0 0 15px #06b6d4" 
+                }}
+                className="absolute -bottom-1 left-0 w-full bg-cyan-400 rounded-full" />
             )}
           </a>
         ))}
