@@ -1,23 +1,73 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
-/* @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-} */
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }
+
+@keyframes marquee-reverse {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee-reverse {
+  animation: marquee-reverse 30s linear infinite;
+}
+
+@keyframes floating {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+
+.floating-photo {
+  animation: floating 6s ease-in-out infinite;
+}
+
+.photo-box {
+  width: 280px;
+  height: 280px;
+}
+
+@media (min-width: 768px) {
+  .photo-box {
+    width: 350px;
+    height: 350px;
+  }
+}
+
+.profile-card-3d {
+  width: 18rem;
+  height: 24rem;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(34,211,238,0.2);
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);
+  background: linear-gradient(
+    135deg,
+    rgba(34,211,238,0.12),
+    transparent
+  );
+}
+
+
+
 
 body {
   background: var(--background);
@@ -30,5 +80,5 @@ html {
 }
 
 section {
-  scroll-margin-top: 80px; 
+  scroll-margin-top: 80px;
 }
