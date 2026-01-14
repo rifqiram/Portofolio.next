@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Lanyard from "./Lanyard";
+import { motion } from "framer-motion";
 
 export default function ContactSection() {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -23,21 +24,43 @@ export default function ContactSection() {
     <section
       id="contact"
       ref={ref}
-      className={`relative min-h-screen bg-gray-900 flex items-center justify-center
-        transition-all duration-1000
-        ${show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-24"}`}
+      className={`relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-900`}
     >
-      <div className="relative flex flex-col md:flex-row items-center gap-16">
+      {/* EXPANDING / PULSING CIRCLES */}
+      <motion.div
+        animate={show ? { scale: [0.5, 1, 0.5], opacity: [0, 0.15, 0] } : { scale: 0, opacity: 0 }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-1/3 left-1/4 w-72 h-72 rounded-full bg-cyan-500/10 blur-3xl pointer-events-none"
+      />
+      <motion.div
+        animate={show ? { scale: [0.6, 1, 0.6], opacity: [0, 0.1, 0] } : { scale: 0, opacity: 0 }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-blue-500/5 blur-3xl pointer-events-none"
+      />
+      <motion.div
+        animate={show ? { scale: [0.4, 1, 0.4], opacity: [0, 0.08, 0] } : { scale: 0, opacity: 0 }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-1/2 right-1/3 w-80 h-80 rounded-full bg-purple-500/5 blur-3xl pointer-events-none"
+      />
+
+      {/* CONTENT */}
+      <div className={`relative flex flex-col md:flex-row items-center gap-16 z-10`}>
         {/* LANYARD */}
-        <div
-          className={`transition-all duration-1000
-            ${show ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-12"}`}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={show ? { opacity: 1, y: 0 } : { opacity: 0 }}
+          transition={{ duration: 1, delay: 0.3 }}
         >
           <Lanyard />
-        </div>
+        </motion.div>
 
-        {/* CONTACT CONTENT */}
-        <div className="text-center md:text-left">
+        {/* CONTACT DETAILS */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={show ? { opacity: 1, y: 0 } : { opacity: 0 }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="text-center md:text-left max-w-md"
+        >
           <h2 className="text-4xl font-bold text-white mb-6">
             Contact Me
           </h2>
@@ -87,7 +110,7 @@ export default function ContactSection() {
           >
             Send Email
           </a>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
