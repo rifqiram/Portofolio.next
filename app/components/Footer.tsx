@@ -1,6 +1,7 @@
 "use client";
 
 import { FaFacebookF, FaGithub, FaInstagram, FaLinkedinIn, FaArrowUp } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -13,6 +14,9 @@ export default function Footer() {
     { icon: <FaInstagram size={18} />, url: "https://www.instagram.com/r.ramadhan._" },
     { icon: <FaLinkedinIn size={18} />, url: "https://www.linkedin.com/in/rifqi-ramadhan-2a356b391/" },
   ];
+
+  // Teks untuk running text
+  const marqueeText = "© 2026 RIFQI RAMADHAN • ALL RIGHTS RESERVED • ";
 
   return (
     <footer className="relative bg-[#0a0a0a] border-t border-white/5 pt-16 pb-8 overflow-hidden">
@@ -58,18 +62,35 @@ export default function Footer() {
         </div>
 
         {/* BOTTOM SECTION */}
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
-          <p className="text-gray-600 text-[10px] md:text-xs uppercase tracking-[0.3em] font-medium">
-            © 2026 RIFQI RAMADHAN • ALL RIGHTS RESERVED
-          </p>
+        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           
-          <div className="flex gap-6 text-gray-600 text-[10px] uppercase tracking-widest font-bold items-center">
+          {/* RUNNING TEXT COPYRIGHT (SISI KIRI) */}
+          <div className="relative flex overflow-hidden w-full md:w-1/2 group">
+            <motion.div
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ ease: "linear", duration: 15, repeat: Infinity }}
+              className="flex whitespace-nowrap"
+            >
+              <span className="text-gray-600 text-[10px] md:text-xs uppercase tracking-[0.3em] font-medium pr-4">
+                {marqueeText.repeat(4)}
+              </span>
+              {/* Duplikasi teks untuk loop tanpa putus */}
+              <span className="text-gray-600 text-[10px] md:text-xs uppercase tracking-[0.3em] font-medium pr-4">
+                {marqueeText.repeat(4)}
+              </span>
+            </motion.div>
+            
+            {/* Overlay Gradient halus agar teks masuk/keluar terlihat pudar */}
+            <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10" />
+            <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10" />
+          </div>
+          
+          <div className="flex gap-6 text-gray-600 text-[10px] uppercase tracking-widest font-bold items-center shrink-0">
             <span className="hover:text-cyan-400 transition-colors cursor-default">Frontend Developer</span>
             <span className="text-cyan-500/50 hidden md:inline">|</span>
             
-            {/* LINK KE AREA UMUM CARUBAN / KAB. MADIUN */}
             <a 
-              href="https://www.google.com/maps?q=-7.5516,111.6622" 
+              href="https://www.google.com/maps/search/Kab.+Madiun" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-cyan-500 hover:text-white transition-all duration-300 flex items-center gap-2 group"

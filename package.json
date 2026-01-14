@@ -2,11 +2,12 @@
   "name": "my-portofolio",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
+"scripts": {
+  "dev": "next dev",
+  "build": "cross-env NODE_OPTIONS=16384 next build",
+  "start": "next start",
+  "clean": "rimraf .next node_modules/.cache"
+},
   "dependencies": {
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
@@ -25,7 +26,11 @@
     "@types/node": "25.0.3",
     "@types/react": "19.2.7",
     "babel-plugin-react-compiler": "1.0.0",
+    "cross-env": "^7.0.3",
+    "rimraf": "^5.0.10",
     "tailwindcss": "^4",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "webpack": "^5.104.1",
+    "webpack-cli": "^6.0.1"
   }
 }
