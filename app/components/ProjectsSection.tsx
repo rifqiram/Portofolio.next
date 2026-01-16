@@ -4,28 +4,88 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 
-const projects = [
-  {
-    title: "Sistem Login & CRUD",
-    desc: "Aplikasi web manajemen data terintegrasi dengan keamanan autentikasi menggunakan PHP Native dan MySQL Database.",
-    tags: ["PHP", "MySQL", "Bootstrap"],
-    link: "#",
+// 1. DATA PROJECT DENGAN MULTI-LANGUAGE
+const translations = {
+  id: {
+    sectionTitle: "PROYEK",
+    sectionSubtitle: "UNGGULAN",
+    viewCase: "LIHAT DETAIL",
+    projects: [
+      {
+        title: "Sistem Login & CRUD",
+        desc: "Aplikasi web manajemen data terintegrasi dengan keamanan autentikasi menggunakan PHP Native dan MySQL Database.",
+        tags: ["PHP", "MySQL", "Bootstrap"],
+        link: "#",
+      },
+      {
+        title: "Website Toko Online",
+        desc: "Platform E-commerce responsif dengan katalog produk dinamis, sistem keranjang, dan manajemen inventaris.",
+        tags: ["JavaScript", "Tailwind", "Firebase"],
+        link: "#",
+      },
+      {
+        title: "Website Portofolio",
+        desc: "Website portofolio modern dengan animasi Framer Motion, performa tinggi, dan optimasi SEO menggunakan Next.js.",
+        tags: ["Next.js", "TypeScript", "Framer Motion"],
+        link: "#",
+      }
+    ]
   },
-  {
-    title: "Website Toko Online",
-    desc: "Platform E-commerce responsif dengan katalog produk dinamis, sistem keranjang, dan manajemen inventaris.",
-    tags: ["JavaScript", "Tailwind", "Firebase"],
-    link: "#",
+  eng: {
+    sectionTitle: "FEATURED",
+    sectionSubtitle: "PROJECTS",
+    viewCase: "VIEW CASE",
+    projects: [
+      {
+        title: "Login & CRUD System",
+        desc: "Integrated data management web application with authentication security using Native PHP and MySQL Database.",
+        tags: ["PHP", "MySQL", "Bootstrap"],
+        link: "#",
+      },
+      {
+        title: "E-Commerce Website",
+        desc: "Responsive E-commerce platform with dynamic product catalogs, cart systems, and inventory management.",
+        tags: ["JavaScript", "Tailwind", "Firebase"],
+        link: "#",
+      },
+      {
+        title: "Portfolio Website",
+        desc: "Modern portfolio website with Framer Motion animations, high performance, and SEO optimization using Next.js.",
+        tags: ["Next.js", "TypeScript", "Framer Motion"],
+        link: "#",
+      }
+    ]
   },
-  {
-    title: "Portofolio Website",
-    desc: "Website portofolio modern dengan animasi Framer Motion, performa tinggi, dan optimasi SEO menggunakan Next.js.",
-    tags: ["Next.js", "TypeScript", "Framer Motion"],
-    link: "#",
+  jpy: {
+    sectionTitle: "主な",
+    sectionSubtitle: "プロジェクト",
+    viewCase: "詳細を見る",
+    projects: [
+      {
+        title: "ログイン & CRUD システム",
+        desc: "PHP Native と MySQL データベースを使用した、認証セキュリティを備えた統合データ管理 Web アプリケーション。",
+        tags: ["PHP", "MySQL", "Bootstrap"],
+        link: "#",
+      },
+      {
+        title: "オンラインショップ",
+        desc: "動的な商品カタログ、カートシステム、在庫管理を備えたレスポンシブな E コマースプラットフォーム。",
+        tags: ["JavaScript", "Tailwind", "Firebase"],
+        link: "#",
+      },
+      {
+        title: "ポートフォリオサイト",
+        desc: "Framer Motion アニメーション、高性能、Next.js を使用した SEO 最適化を備えたモダンなポートフォリオサイト。",
+        tags: ["Next.js", "TypeScript", "Framer Motion"],
+        link: "#",
+      }
+    ]
   }
-];
+};
 
-function ProjectCard({ item, index, isVisible, theme }: { item: any, index: number, isVisible: boolean, theme: string }) {
+type Language = "id" | "eng" | "jpy";
+
+function ProjectCard({ item, index, isVisible, theme, viewCaseText }: { item: any, index: number, isVisible: boolean, theme: string, viewCaseText: string }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -86,7 +146,7 @@ function ProjectCard({ item, index, isVisible, theme }: { item: any, index: numb
 
         <div className="flex items-center gap-6 mt-auto">
           <a href={item.link} className={`flex items-center gap-2 font-bold text-sm tracking-tighter transition-colors duration-500 ${theme==="dark" ? "text-white group-hover:text-cyan-400" : "text-black group-hover:text-blue-500"}`}>
-            VIEW CASE <FaExternalLinkAlt size={12} />
+            {viewCaseText} <FaExternalLinkAlt size={12} />
           </a>
           <a href="#" className={`transition-colors duration-500 ${theme==="dark" ? "text-gray-500 hover:text-white" : "text-gray-500 hover:text-black"}`}>
             <FaGithub size={20} />
@@ -104,6 +164,10 @@ export default function ProjectsSection() {
   const [show, setShow] = useState(false);
   const [theme, setTheme] = useState("dark");
   const [isExpanding, setIsExpanding] = useState(false);
+  
+  // 2. STATE BAHASA
+  const [lang, setLang] = useState<Language>("id");
+  const t = translations[lang];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -112,6 +176,13 @@ export default function ProjectsSection() {
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
+  }, []);
+
+  // 3. LISTEN PERUBAHAN BAHASA
+  useEffect(() => {
+    const handleLangChange = (e: any) => setLang(e.detail);
+    window.addEventListener("langChanged", handleLangChange);
+    return () => window.removeEventListener("langChanged", handleLangChange);
   }, []);
 
   useEffect(() => {
@@ -133,7 +204,6 @@ export default function ProjectsSection() {
   return (
     <section ref={ref} id="projects" className={`min-h-screen py-24 flex flex-col items-center justify-center relative overflow-hidden transition-colors duration-700 ${theme==="dark"?"bg-[#0a0a0a]":"bg-white"}`}>
       
-      {/* Expanding Circle */}
       {isExpanding && (
         <div
           className="absolute z-10 rounded-full pointer-events-none"
@@ -149,7 +219,6 @@ export default function ProjectsSection() {
         />
       )}
 
-      {/* Glow Decor */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
 
@@ -161,7 +230,7 @@ export default function ProjectsSection() {
           className="mb-16"
         >
           <h2 className={`text-5xl md:text-7xl font-black tracking-tighter transition-colors duration-500 ${theme==="dark"?"text-white":"text-black"}`}>
-            FEATURED <span className={`text-cyan-400`}>PROJECTS</span>
+            {t.sectionTitle} <span className={`text-cyan-400`}>{t.sectionSubtitle}</span>
           </h2>
           <motion.div 
             initial={{ width: 0 }}
@@ -172,7 +241,17 @@ export default function ProjectsSection() {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" style={{ perspective: "1000px" }}>
-          {projects.map((item, index) => <ProjectCard key={item.title} item={item} index={index} isVisible={show} theme={theme} />)}
+          {/* Loop menggunakan data dari objek translasi */}
+          {t.projects.map((item, index) => (
+            <ProjectCard 
+              key={item.title} 
+              item={item} 
+              index={index} 
+              isVisible={show} 
+              theme={theme} 
+              viewCaseText={t.viewCase} 
+            />
+          ))}
         </div>
       </div>
     </section>

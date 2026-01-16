@@ -1,21 +1,51 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { FaSun, FaMoon } from "react-icons/fa";
+import { useState, useEffect, useRef } from "react";
+import { FaSun, FaMoon, FaGlobe } from "react-icons/fa";
+
+// Tambahkan translasi untuk label menu navigasi
+const navTranslations = {
+  id: { home: "Beranda", about: "Tentang", skills: "Keahlian", projects: "Proyek", certificates: "Sertifikat", contact: "Kontak" },
+  eng: { home: "Home", about: "About", skills: "Skills", projects: "Projects", certificates: "Certificates", contact: "Contact" },
+  jpy: { home: "ホーム", about: "紹介", skills: "スキル", projects: "プロジェクト", certificates: "証明書", contact: "連絡先" },
+};
 
 export default function Navbar() {
   const [active, setActive] = useState("home");
   const [scrolled, setScrolled] = useState(false);
   const [isDark, setIsDark] = useState(true);
+  
+  const [lang, setLang] = useState("id");
+  const [showLangDropdown, setShowLangDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Ambil label menu berdasarkan bahasa yang dipilih
+  const tNav = navTranslations[lang as keyof typeof navTranslations];
 
   const navItems = [
-    { id: "home", label: "Home" },
-    { id: "about", label: "About" },
-    { id: "skills", label: "Skills" },
-    { id: "projects", label: "Projects" },
-    { id: "certificates", label: "Certificates" },
-    { id: "contact", label: "Contact" },
+    { id: "home", label: tNav.home },
+    { id: "about", label: tNav.about },
+    { id: "skills", label: tNav.skills },
+    { id: "projects", label: tNav.projects },
+    { id: "certificates", label: tNav.certificates },
+    { id: "contact", label: tNav.contact },
   ];
+
+  const languages = [
+    { code: "id", name: "Indonesia" },
+    { code: "eng", name: "English" },
+    { code: "jpy", name: "Japanese" },
+  ];
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowLangDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const updateIconStatus = () => {
     const theme = document.documentElement.getAttribute("data-theme");
@@ -36,6 +66,16 @@ export default function Navbar() {
     document.documentElement.setAttribute("data-theme", nextTheme);
     updateIconStatus();
     window.dispatchEvent(new Event("themeChanged"));
+  };
+
+  // FUNGSI UTAMA UNTUK TRIGGER GLOBAL
+  const changeLanguage = (code: string) => {
+    setLang(code);
+    setShowLangDropdown(false);
+    
+    // Broadcast ke komponen lain (seperti HomeSection)
+    const event = new CustomEvent("langChanged", { detail: code });
+    window.dispatchEvent(event);
   };
 
   useEffect(() => {
@@ -68,8 +108,7 @@ export default function Navbar() {
             : "bg-white/80 dark:bg-black/20 backdrop-blur-md border-gray-300 dark:border-white/10"
         }`}
       >
-        {/* AREA MENU: Scrollable on Mobile */}
-        <div className="flex items-center pl-4 pr-2 py-2 overflow-x-auto no-scrollbar max-w-[65vw] md:max-w-none">
+        <div className="flex items-center pl-4 pr-2 py-2 overflow-x-auto no-scrollbar max-w-[50vw] md:max-w-none">
           <div className="flex items-center gap-1 md:gap-4">
             {navItems.map((item) => (
               <a
@@ -97,21 +136,50 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* SEPARATOR */}
         <div className="w-[1px] h-5 bg-gray-300 dark:bg-white/10 mx-2 flex-shrink-0" />
 
-        {/* TOGGLE THEME: Rapi & Center */}
+        {/* DROPDOWN BAHASA */}
+        <div className="relative" ref={dropdownRef}>
+          <button 
+            onClick={() => setShowLangDropdown(!showLangDropdown)}
+            className={`flex items-center gap-1 px-2 py-1 text-[10px] md:text-xs font-bold transition-all
+            ${isDark ? "text-gray-400 hover:text-cyan-400" : "text-gray-500 hover:text-cyan-500"}`}
+          >
+            <FaGlobe className={showLangDropdown ? "text-cyan-400 animate-spin-slow" : ""} />
+            <span className="uppercase">{lang}</span>
+          </button>
+
+          {showLangDropdown && (
+            <div className={`absolute top-12 left-1/2 -translate-x-1/2 w-32 rounded-2xl border shadow-2xl p-2 transition-all animate-in fade-in zoom-in duration-200
+              ${isDark ? "bg-[#0a0a0a] border-cyan-500/30 text-white" : "bg-white border-gray-200 text-black"}`}>
+              {languages.map((l) => (
+                <button
+                  key={l.code}
+                  onClick={() => changeLanguage(l.code)}
+                  className={`w-full text-left px-4 py-2 text-[10px] md:text-xs font-bold rounded-xl transition-all mb-1 last:mb-0
+                    ${lang === l.code 
+                      ? "bg-cyan-500 text-black" 
+                      : isDark ? "hover:bg-white/5" : "hover:bg-gray-100"}`}
+                >
+                  {l.name}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="w-[1px] h-5 bg-gray-300 dark:bg-white/10 mx-2 flex-shrink-0" />
+
         <div className="pr-4 pl-2 flex items-center justify-center">
           <button 
             onClick={toggleTheme} 
-            className={`relative flex items-center w-12 h-6 rounded-full p-1 transition-all duration-500 border
+            className={`relative flex items-center w-10 md:w-12 h-6 rounded-full p-1 transition-all duration-500 border
             ${isDark 
               ? "bg-cyan-500/10 border-cyan-500/30" 
               : "bg-gray-100 border-gray-300"}`}
           >
-            {/* Knob/Lingkaran Switch */}
             <div className={`flex items-center justify-center w-4 h-4 rounded-full shadow-md transition-all duration-500 transform
-              ${isDark ? "translate-x-6 bg-cyan-400" : "translate-x-0 bg-white"}`}
+              ${isDark ? "translate-x-4 md:translate-x-6 bg-cyan-400" : "translate-x-0 bg-white"}`}
             >
               {isDark 
                 ? <FaSun size={10} className="text-[#0a0a0a]" /> 
@@ -122,13 +190,10 @@ export default function Navbar() {
       </div>
 
       <style jsx>{`
-        .no-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .animate-spin-slow { animation: spin-slow 3s linear infinite; }
       `}</style>
     </nav>
   );
