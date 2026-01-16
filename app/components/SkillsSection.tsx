@@ -4,6 +4,26 @@ import { useEffect, useRef, useState } from "react";
 import { FaHtml5, FaCss3Alt, FaJs, FaReact, FaPhp, FaDatabase, FaNodeJs } from "react-icons/fa";
 import { SiNextdotjs, SiTailwindcss, SiTypescript } from "react-icons/si";
 
+// 1. OBJEK TRANSLASI
+const translations = {
+  id: {
+    subtitle: "Keahlian Saya",
+    title1: "Teknologi",
+    title2: "Unggulan",
+  },
+  eng: {
+    subtitle: "My Skills",
+    title1: "Tech",
+    title2: "Stack",
+  },
+  jpy: {
+    subtitle: "スキル",
+    title1: "技術",
+    title2: "スタック",
+  },
+};
+
+type Language = "id" | "eng" | "jpy";
 type Skill = { name: string; icon: React.ReactNode };
 
 const skills: Skill[] = [
@@ -61,7 +81,17 @@ export default function SkillsSection() {
   const [show, setShow] = useState(false);
   const [theme, setTheme] = useState("dark");
   const [isExpanding, setIsExpanding] = useState(false);
+  const [lang, setLang] = useState<Language>("id");
   const mouse = useRef({ x: 0, y: 0 });
+
+  const t = translations[lang];
+
+  // LISTEN PERUBAHAN BAHASA
+  useEffect(() => {
+    const handleLangChange = (e: any) => setLang(e.detail);
+    window.addEventListener("langChanged", handleLangChange);
+    return () => window.removeEventListener("langChanged", handleLangChange);
+  }, []);
 
   useEffect(() => {
     const handleThemeChange = () => {
@@ -149,7 +179,6 @@ export default function SkillsSection() {
     >
       <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none" />
 
-      {/* Expanding Circle */}
       {isExpanding && (
         <div
           className="absolute z-10 rounded-full pointer-events-none"
@@ -165,15 +194,17 @@ export default function SkillsSection() {
         />
       )}
 
-      {/* HEADER */}
+      {/* HEADER - TERHUBUNG TRANSLASI */}
       <div className={`relative z-10 mb-24 transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] ${show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}>
         <div className="flex items-center justify-center gap-3 mb-4">
           <div className={`h-[1px] w-8 transition-colors duration-700 ${theme === "dark" ? "bg-cyan-500/50" : "bg-blue-500/50"}`} />
-          <span className={`text-xs font-bold tracking-[0.4em] uppercase transition-colors duration-700 ${theme === "dark" ? "text-cyan-400" : "text-blue-600"}`}>My Skills</span>
+          <span className={`text-xs font-bold tracking-[0.4em] uppercase transition-colors duration-700 ${theme === "dark" ? "text-cyan-400" : "text-blue-600"}`}>
+            {t.subtitle}
+          </span>
           <div className={`h-[1px] w-8 transition-colors duration-700 ${theme === "dark" ? "bg-cyan-500/50" : "bg-blue-500/50"}`} />
         </div>
         <h2 className={`text-6xl md:text-8xl font-black text-center tracking-tighter uppercase italic transition-colors duration-700 ${theme === "dark" ? "text-white" : "text-black"}`}>
-          Tech <span className={`underline decoration-white/10 underline-offset-8 transition-colors duration-700 ${theme === "dark" ? "text-cyan-400" : "text-blue-500"}`}>Stack</span>
+          {t.title1} <span className={`underline decoration-white/10 underline-offset-8 transition-colors duration-700 ${theme === "dark" ? "text-cyan-400" : "text-blue-500"}`}>{t.title2}</span>
         </h2>
       </div>
 

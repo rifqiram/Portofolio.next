@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
-/* Root variables */
+/* 1. VARIABEL SISTEM & TEMA */
 :root {
   --background: #0a0a0a;
   --foreground: #ededed;
   --accent: #22d3ee;
   --card-bg: rgba(34, 211, 238, 0.12);
   --border-color: rgba(34, 211, 238, 0.2);
+  --selection-bg: rgba(34, 211, 238, 0.3);
 }
 
 [data-theme="light"] {
@@ -15,24 +16,42 @@
   --accent: #0ea5e9;
   --card-bg: rgba(14, 165, 233, 0.12);
   --border-color: rgba(14, 165, 233, 0.2);
+  --selection-bg: rgba(14, 165, 233, 0.3);
 }
 
-body {
-  background: var(--background);
+/* 2. BASE STYLES */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+::selection {
+  background-color: var(--selection-bg);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-  transition: background 0.8s ease, color 0.8s ease;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1), color 0.8s ease;
+  overflow-x: hidden;
+}
+
 section {
   scroll-margin-top: 80px;
 }
 
-/* Overlay animation for theme change */
+/* 3. ANIMASI DASAR & TRANSISI */
+.transition-all {
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 @keyframes mode-switch-half {
   0% { clip-path: circle(0% at 50% 50%); }
   50% { clip-path: circle(50% at 50% 50%); }
@@ -43,7 +62,27 @@ section {
   animation: mode-switch-half 0.8s ease forwards;
 }
 
-/* Other animations (marquee, floating, etc.) */
+/* 4. UTILITY KHUSUS CONTACT SECTION */
+.glass-morphism {
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  background: linear-gradient(
+    135deg,
+    var(--card-bg),
+    rgba(255, 255, 255, 0.01)
+  );
+}
+
+@keyframes rotate-border {
+  from { transform: translateX(-50%) rotate(0deg); }
+  to { transform: translateX(-50%) rotate(360deg); }
+}
+
+.animate-rotate-border {
+  animation: rotate-border 6s linear infinite;
+}
+
+/* 5. MARQUEE & FLOATING ANIMATIONS */
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -58,24 +97,39 @@ section {
 .animate-marquee-reverse { animation: marquee-reverse 30s linear infinite; }
 
 @keyframes floating {
-  0% { transform: translateY(0px); }
+  0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-12px); }
-  100% { transform: translateY(0px); }
 }
 
 .floating-photo { animation: floating 6s ease-in-out infinite; }
 
-.photo-box { width: 280px; height: 280px; }
-@media (min-width: 768px) { .photo-box { width: 350px; height: 350px; } }
+/* 6. CARD & BOX STYLES */
+.photo-box { 
+  width: 280px; 
+  height: 280px; 
+}
+
+@media (min-width: 768px) { 
+  .photo-box { width: 350px; height: 350px; } 
+}
 
 .profile-card-3d {
   width: 18rem;
   height: 24rem;
   border-radius: 1.5rem;
   border: 1px solid var(--border-color);
-  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
   background: linear-gradient(135deg, var(--card-bg), transparent);
-  transition: background 0.8s ease, border-color 0.8s ease;
+  transition: background 0.8s ease, border-color 0.8s ease, transform 0.3s ease;
 }
 
-.transition-all { transition: all 0.8s ease; }
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
