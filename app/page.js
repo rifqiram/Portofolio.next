@@ -12,7 +12,7 @@ export default function Home() {
     <main className="bg-[#0a0a0a]">
       <Navbar />
       
-      {/* Hero & Intro */}
+      {/* Intro */}
       <HomeSection />
       <AboutSection />
       
