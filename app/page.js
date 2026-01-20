@@ -3,7 +3,7 @@ import HomeSection from "./components/HomeSection";
 import AboutSection from "./components/AboutSection";
 import SkillsSection from "./components/SkillsSection";
 import ProjectsSection from "./components/ProjectsSection";
-import CertificateSection from "./components/CertificateSection"; // Import komponen baru
+import CertificateSection from "./components/CertificateSection"; 
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 
