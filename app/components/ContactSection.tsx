@@ -86,8 +86,8 @@ export default function ContactSection() {
       className={`relative py-24 px-6 transition-colors duration-1000 min-h-screen flex items-center justify-center overflow-hidden
         ${theme === "dark" ? "bg-[#050505]" : "bg-[#f1f5f9]"}`}
     >
-      {/* BACKGROUND LAYER: Tetap Slate Gray agar GradientBlind terlihat jelas */}
-      <div className="absolute inset-0 z-0 opacity-100 pointer-events-none">
+      {/* BACKGROUND LAYER: Transisi warna gradient blinds yang smooth */}
+      <div className="absolute inset-0 z-0 opacity-100 pointer-events-none transition-opacity duration-1000">
         <GradientBlinds
           gradientColors={theme === "dark" 
             ? ['#1e1b4b', '#312e81', '#050505'] 
@@ -99,9 +99,9 @@ export default function ContactSection() {
         />
       </div>
 
-      {/* BLUR GLOW OVERLAY: Cyan Glow */}
+      {/* BLUR GLOW OVERLAY: Cyan Glow dengan transisi warna */}
       <div className="absolute inset-0 pointer-events-none z-[1]">
-        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[160px] 
+        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[160px] transition-colors duration-1000
           ${theme === "dark" ? "bg-cyan-500/10" : "bg-cyan-400/20"}`} />
       </div>
 
@@ -111,50 +111,49 @@ export default function ContactSection() {
         <motion.div 
           initial={{ opacity: 0, x: -50 }}
           animate={visible ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="space-y-10"
         >
           <div>
             {/* Badge Cyan */}
-            <div className={`inline-block px-4 py-1 rounded-full border mb-6 text-xs font-bold tracking-widest uppercase
+            <div className={`inline-block px-4 py-1 rounded-full border mb-6 text-xs font-bold tracking-widest uppercase transition-all duration-700
               ${theme === "dark" ? "border-cyan-500/30 text-cyan-400 bg-cyan-500/5" : "border-cyan-500/30 text-cyan-600 bg-cyan-500/10"}`}>
               {t.badge}
             </div>
             
-            <h2 className={`text-6xl md:text-8xl font-black tracking-tighter uppercase italic leading-[0.85] mb-8
+            <h2 className={`text-6xl md:text-8xl font-black tracking-tighter uppercase italic leading-[0.85] mb-8 transition-colors duration-700
               ${theme === "dark" ? "text-white" : "text-slate-900"}`}>
               {t.title1} <br />
-              {/* Text Gradient Cyan */}
-              <span className={`text-transparent bg-clip-text bg-gradient-to-r ${theme === "dark" ? "from-cyan-400 to-blue-500" : "from-cyan-500 to-cyan-700"}`}>
+              <span className={`text-transparent bg-clip-text bg-gradient-to-r transition-all duration-700 ${theme === "dark" ? "from-cyan-400 to-blue-500" : "from-cyan-500 to-cyan-700"}`}>
                 {t.title2}
               </span>
             </h2>
             
-            <p className={`text-lg max-w-sm leading-relaxed ${theme === "dark" ? "text-gray-400" : "text-slate-700 font-medium"}`}>
+            <p className={`text-lg max-w-sm leading-relaxed transition-colors duration-700 ${theme === "dark" ? "text-gray-400" : "text-slate-700 font-medium"}`}>
               {t.desc}
             </p>
           </div>
 
           <div className="space-y-6">
             <a href="mailto:rifqiram6140@gmail.com" className="flex items-center gap-5 group w-fit">
-              {/* Icon Box Cyan */}
-              <div className={`p-4 rounded-2xl transition-all duration-300 group-hover:scale-110 shadow-sm
+              <div className={`p-4 rounded-2xl transition-all duration-500 group-hover:scale-110 shadow-sm
                 ${theme === "dark" ? "bg-white/5 text-cyan-400" : "bg-white text-cyan-600 border border-slate-200"}`}>
                 <FaEnvelope className="text-xl" />
               </div>
               <div>
                 <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">{t.emailMe}</p>
-                <p className={`text-lg font-bold transition-colors ${theme === "dark" ? "text-white group-hover:text-cyan-400" : "text-slate-900 group-hover:text-cyan-600"}`}>rifqiram6140@gmail.com</p>
+                <p className={`text-lg font-bold transition-colors duration-500 ${theme === "dark" ? "text-white group-hover:text-cyan-400" : "text-slate-900 group-hover:text-cyan-600"}`}>rifqiram6140@gmail.com</p>
               </div>
             </a>
             
             <a href="https://github.com/rifqiram" target="_blank" rel="noopener noreferrer" className="flex items-center gap-5 group w-fit">
-              <div className={`p-4 rounded-2xl transition-all duration-300 group-hover:scale-110 shadow-sm
+              <div className={`p-4 rounded-2xl transition-all duration-500 group-hover:scale-110 shadow-sm
                 ${theme === "dark" ? "bg-white/5 text-cyan-400" : "bg-white text-cyan-600 border border-slate-200"}`}>
                 <FaGithub className="text-xl" />
               </div>
               <div>
                 <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">Github</p>
-                <p className={`text-lg font-bold transition-colors ${theme === "dark" ? "text-white group-hover:text-cyan-400" : "text-slate-900 group-hover:text-cyan-600"}`}>@rifqiram</p>
+                <p className={`text-lg font-bold transition-colors duration-500 ${theme === "dark" ? "text-white group-hover:text-cyan-400" : "text-slate-900 group-hover:text-cyan-600"}`}>@rifqiram</p>
               </div>
             </a>
           </div>
@@ -164,24 +163,24 @@ export default function ContactSection() {
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={visible ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="relative p-[1px] rounded-[2.5rem] overflow-hidden group shadow-2xl"
         >
           {/* Efek Border Putar Cyan */}
-          <div className={`absolute inset-0 z-0 opacity-40 group-hover:opacity-100 transition-opacity duration-700
-            ${theme === "dark" ? "bg-gradient-to-r from-transparent via-cyan-500 to-transparent" : "bg-gradient-to-r from-transparent via-cyan-500 to-transparent"}`}
+          <div className="absolute inset-0 z-0 opacity-40 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-r from-transparent via-cyan-500 to-transparent"
             style={{ animation: 'rotate 6s linear infinite', width: '200%', left: '-50%' }}
           />
 
-          <div className={`relative z-10 p-8 md:p-14 rounded-[2.4rem] backdrop-blur-xl 
+          <div className={`relative z-10 p-8 md:p-14 rounded-[2.4rem] backdrop-blur-xl transition-colors duration-700
             ${theme === "dark" ? "bg-[#0c0c0c]/95 border border-white/5" : "bg-white/95 border border-slate-200"}`}>
             
             <form className="space-y-12" onSubmit={(e) => e.preventDefault()}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="relative">
                   <input type="text" id="name" required 
-                    className={`peer w-full bg-transparent border-b-2 py-3 outline-none transition-all
+                    className={`peer w-full bg-transparent border-b-2 py-3 outline-none transition-all duration-500
                     ${theme === "dark" ? "border-white/10 text-white focus:border-cyan-400" : "border-slate-300 text-slate-900 focus:border-cyan-500"}`} />
-                  <label htmlFor="name" className={`absolute left-0 top-3 text-sm font-medium transition-all pointer-events-none uppercase tracking-widest
+                  <label htmlFor="name" className={`absolute left-0 top-3 text-sm font-medium transition-all duration-500 pointer-events-none uppercase tracking-widest
                     peer-focus:-top-6 peer-focus:text-[10px] peer-focus:font-bold
                     peer-valid:-top-6 peer-valid:text-[10px] peer-valid:font-bold
                     ${theme === "dark" ? "text-gray-500 peer-focus:text-cyan-400" : "text-slate-500 peer-focus:text-cyan-600"}`}>
@@ -191,9 +190,9 @@ export default function ContactSection() {
 
                 <div className="relative">
                   <input type="email" id="email" required 
-                    className={`peer w-full bg-transparent border-b-2 py-3 outline-none transition-all
+                    className={`peer w-full bg-transparent border-b-2 py-3 outline-none transition-all duration-500
                     ${theme === "dark" ? "border-white/10 text-white focus:border-cyan-400" : "border-slate-300 text-slate-900 focus:border-cyan-500"}`} />
-                  <label htmlFor="email" className={`absolute left-0 top-3 text-sm font-medium transition-all pointer-events-none uppercase tracking-widest
+                  <label htmlFor="email" className={`absolute left-0 top-3 text-sm font-medium transition-all duration-500 pointer-events-none uppercase tracking-widest
                     peer-focus:-top-6 peer-focus:text-[10px] peer-focus:font-bold
                     peer-valid:-top-6 peer-valid:text-[10px] peer-valid:font-bold
                     ${theme === "dark" ? "text-gray-500 peer-focus:text-cyan-400" : "text-slate-500 peer-focus:text-cyan-600"}`}>
@@ -204,9 +203,9 @@ export default function ContactSection() {
 
               <div className="relative">
                 <input type="text" id="subject" required 
-                  className={`peer w-full bg-transparent border-b-2 py-3 outline-none transition-all
+                  className={`peer w-full bg-transparent border-b-2 py-3 outline-none transition-all duration-500
                   ${theme === "dark" ? "border-white/10 text-white focus:border-cyan-400" : "border-slate-300 text-slate-900 focus:border-cyan-500"}`} />
-                <label htmlFor="subject" className={`absolute left-0 top-3 text-sm font-medium transition-all pointer-events-none uppercase tracking-widest
+                <label htmlFor="subject" className={`absolute left-0 top-3 text-sm font-medium transition-all duration-500 pointer-events-none uppercase tracking-widest
                   peer-focus:-top-6 peer-focus:text-[10px] peer-focus:font-bold
                   peer-valid:-top-6 peer-valid:text-[10px] peer-valid:font-bold
                   ${theme === "dark" ? "text-gray-500 peer-focus:text-cyan-400" : "text-slate-500 peer-focus:text-cyan-600"}`}>
@@ -216,9 +215,9 @@ export default function ContactSection() {
 
               <div className="relative">
                 <textarea id="msg" required rows={3} 
-                  className={`peer w-full bg-transparent border-b-2 py-3 outline-none transition-all resize-none
+                  className={`peer w-full bg-transparent border-b-2 py-3 outline-none transition-all duration-500 resize-none
                   ${theme === "dark" ? "border-white/10 text-white focus:border-cyan-400" : "border-slate-300 text-slate-900 focus:border-cyan-500"}`} />
-                <label htmlFor="msg" className={`absolute left-0 top-3 text-sm font-medium transition-all pointer-events-none uppercase tracking-widest
+                <label htmlFor="msg" className={`absolute left-0 top-3 text-sm font-medium transition-all duration-500 pointer-events-none uppercase tracking-widest
                   peer-focus:-top-6 peer-focus:text-[10px] peer-focus:font-bold
                   peer-valid:-top-6 peer-valid:text-[10px] peer-valid:font-bold
                   ${theme === "dark" ? "text-gray-500 peer-focus:text-cyan-400" : "text-slate-500 peer-focus:text-cyan-600"}`}>
@@ -231,9 +230,7 @@ export default function ContactSection() {
                 <span className="relative z-10 flex items-center justify-center gap-4">
                   {t.send} <FaPaperPlane className="group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform duration-500" />
                 </span>
-                {/* Overlay Button Cyan */}
-                <div className={`absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out
-                  ${theme === "dark" ? "bg-cyan-600" : "bg-cyan-600"}`} />
+                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out bg-cyan-600" />
               </button>
             </form>
           </div>

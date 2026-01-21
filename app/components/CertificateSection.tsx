@@ -118,15 +118,16 @@ export default function CertificateSection() {
         ${theme === "dark" ? "bg-[#0a0a0a]" : "bg-white"}`}
     >
 
-      {/* Expanding Circle */}
+      {/* Expanding Circle - Menyesuaikan Warna Sebaliknya */}
       {isExpanding && (
         <div
           className="absolute z-10 rounded-full pointer-events-none"
           style={{
             width:"250vw", height:"250vw", top:"50%", left:"50%",
-            background: theme === "dark" ? "#ffffff" : "#0a0a0a",
+            // Jika tema sekarang dark, berarti transisi sebelumnya dari light (putih)
+            background: theme === "dark" ? "#0a0a0a" : "#ffffff",
             transform:"translate(-50%,-50%) scale(0)",
-            transition:"transform 1.2s cubic-bezier(0.4,0,0.2,1), opacity 0.6s ease",
+            transition:"transform 1.0s cubic-bezier(0.4,0,0.2,1), opacity 0.5s ease",
             opacity:1,
           }}
           ref={(el)=>{ if(el) requestAnimationFrame(()=>{ el.style.transform="translate(-50%,-50%) scale(1)"; el.style.opacity="0"; }); }}

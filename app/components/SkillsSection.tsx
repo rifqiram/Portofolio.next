@@ -58,16 +58,16 @@ function Keycap({ skill, theme }: { skill: Skill; theme: string }) {
 
   return (
     <div className="group mx-4">
-      <div className={`flex items-center gap-4 px-8 py-5 rounded-2xl transition-all duration-500 backdrop-blur-sm active:translate-y-[4px]
+      <div className={`flex items-center gap-4 px-8 py-5 rounded-2xl transition-all duration-700 backdrop-blur-sm active:translate-y-[4px]
         ${theme === "dark"
           ? "bg-[#111]/80 border-white/5 shadow-[0_8px_0_#000] hover:bg-[#161616]"
           : "bg-white/50 border-black/10 shadow-[0_8px_0_#ccc] hover:bg-white/80"}
         hover:border-cyan-500/40 hover:shadow-[0_10px_30px_rgba(6,182,212,0.15)] group-hover:-translate-y-1`}
       >
-        <span className={`text-4xl group-hover:scale-125 transition-transform duration-500 ease-out ${iconColor}`}>
+        <span className={`text-4xl group-hover:scale-125 transition-all duration-700 ease-out ${iconColor}`}>
           {skill.icon}
         </span>
-        <span className={`font-black tracking-widest uppercase text-sm transition-colors duration-500 ${theme === "dark" ? "text-white" : "text-black"}`}>
+        <span className={`font-black tracking-widest uppercase text-sm transition-colors duration-700 ${theme === "dark" ? "text-white" : "text-black"}`}>
           {skill.name}
         </span>
       </div>
@@ -86,7 +86,6 @@ export default function SkillsSection() {
 
   const t = translations[lang];
 
-  // LISTEN PERUBAHAN BAHASA
   useEffect(() => {
     const handleLangChange = (e: any) => setLang(e.detail);
     window.addEventListener("langChanged", handleLangChange);
@@ -143,10 +142,7 @@ export default function SkillsSection() {
       }
       draw() {
         ctx.fillStyle = theme === "dark" ? `rgba(6,182,212,${this.opacity})` : `rgba(14,165,233,${this.opacity})`;
-        ctx.shadowBlur = 5;
-        ctx.shadowColor = theme === "dark" ? "#06b6d4" : "#0ea5e9";
         ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-        ctx.shadowBlur = 0;
       }
     }
 
@@ -175,27 +171,37 @@ export default function SkillsSection() {
     <section
       id="skills"
       ref={sectionRef}
-      className={`relative py-32 overflow-hidden flex flex-col items-center justify-center min-h-screen transition-colors duration-700 ${theme === "dark" ? "bg-[#0a0a0a]" : "bg-white"}`}
+      className="relative py-32 overflow-hidden flex flex-col items-center justify-center min-h-screen"
+      style={{
+        backgroundColor: theme === "dark" ? "#0a0a0a" : "#ffffff",
+        transition: "background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1)"
+      }}
     >
       <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none" />
 
+      {/* Circle Layer - Sync with Home & About */}
       {isExpanding && (
         <div
-          className="absolute z-10 rounded-full pointer-events-none"
+          className="fixed z-10 rounded-full pointer-events-none"
           style={{
-            width:"250vw", height:"250vw", top:"50%", left:"50%",
-            background: theme==="dark"?"#ffffff":"#0a0a0a",
-            transform:"translate(-50%,-50%) scale(0)",
-            transition:"transform 1.2s cubic-bezier(0.4,0,0.2,1), opacity 0.6s ease",
-            opacity:1,
+            width: "150px", height: "150px", top: "50%", left: "50%",
+            background: theme === "dark" ? "#0a0a0a" : "#ffffff",
+            transform: "translate(-50%, -50%) scale(0)",
+            opacity: 1,
+            transition: "transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease",
           }}
-          ref={(el)=>{ if(el) requestAnimationFrame(()=>{ el.style.transform="translate(-50%,-50%) scale(1)"; el.style.opacity="0"; }); }}
-          onTransitionEnd={()=>setIsExpanding(false)}
+          ref={(el) => {
+            if (el) requestAnimationFrame(() => {
+              el.style.transform = "translate(-50%, -50%) scale(50)";
+              el.style.opacity = "0";
+            });
+          }}
+          onTransitionEnd={() => setIsExpanding(false)}
         />
       )}
 
-      {/* HEADER - TERHUBUNG TRANSLASI */}
-      <div className={`relative z-10 mb-24 transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] ${show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}>
+      {/* HEADER */}
+      <div className={`relative z-20 mb-24 transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] ${show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}>
         <div className="flex items-center justify-center gap-3 mb-4">
           <div className={`h-[1px] w-8 transition-colors duration-700 ${theme === "dark" ? "bg-cyan-500/50" : "bg-blue-500/50"}`} />
           <span className={`text-xs font-bold tracking-[0.4em] uppercase transition-colors duration-700 ${theme === "dark" ? "text-cyan-400" : "text-blue-600"}`}>
@@ -204,12 +210,12 @@ export default function SkillsSection() {
           <div className={`h-[1px] w-8 transition-colors duration-700 ${theme === "dark" ? "bg-cyan-500/50" : "bg-blue-500/50"}`} />
         </div>
         <h2 className={`text-6xl md:text-8xl font-black text-center tracking-tighter uppercase italic transition-colors duration-700 ${theme === "dark" ? "text-white" : "text-black"}`}>
-          {t.title1} <span className={`underline decoration-white/10 underline-offset-8 transition-colors duration-700 ${theme === "dark" ? "text-cyan-400" : "text-blue-500"}`}>{t.title2}</span>
+          {t.title1} <span className={`transition-colors duration-700 ${theme === "dark" ? "text-cyan-400" : "text-blue-500"}`}>{t.title2}</span>
         </h2>
       </div>
 
       {/* MARQUEE */}
-      <div className="relative w-full z-10 space-y-10 marquee-masking">
+      <div className="relative w-full z-20 space-y-10 marquee-masking">
         <div className="flex overflow-hidden group">
           <div className="flex min-w-max animate-marquee py-4 group-hover:pause">
             {repeated.map((skill, i) => <Keycap key={`left-${i}`} skill={skill} theme={theme} />)}
