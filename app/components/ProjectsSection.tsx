@@ -1,257 +1,249 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
+import CountUp from "react-countup";
+import CircularGallery from "@/components/CircularGallery"; // Pastikan path benar
 
-// 1. DATA PROJECT DENGAN MULTI-LANGUAGE
+/* ================= TRANSLATION ================= */
 const translations = {
   id: {
     sectionTitle: "PROYEK",
     sectionSubtitle: "UNGGULAN",
     viewCase: "LIHAT DETAIL",
+    stats: [
+      { label: "PROJECTS", value: 12 },
+      { label: "YEARS EXPERIENCE", value: 3 },
+      { label: "TECH STACKS", value: 20 },
+    ],
     projects: [
       {
         title: "Sistem Login & CRUD",
-        desc: "Aplikasi web manajemen data terintegrasi dengan keamanan autentikasi menggunakan PHP Native dan MySQL Database.",
+        desc: "Aplikasi web manajemen data dengan autentikasi menggunakan PHP Native dan MySQL.",
         tags: ["PHP", "MySQL", "Bootstrap"],
         link: "#",
+        image: "/images/login.png",
       },
       {
         title: "Website Toko Online",
-        desc: "Platform E-commerce responsif dengan katalog produk dinamis, sistem keranjang, dan manajemen inventaris.",
+        desc: "Platform E-commerce responsif dengan katalog produk dinamis.",
         tags: ["JavaScript", "Tailwind", "Firebase"],
         link: "#",
+        image: "/images/CRUD.png",
       },
       {
         title: "Website Portofolio",
-        desc: "Website portofolio modern dengan animasi Framer Motion, performa tinggi, dan optimasi SEO menggunakan Next.js.",
+        desc: "Portofolio modern dengan animasi Framer Motion dan optimasi SEO.",
         tags: ["Next.js", "TypeScript", "Framer Motion"],
         link: "#",
-      }
-    ]
+        image: "https://picsum.photos/seed/project3/800/600",
+      },
+    ],
   },
   eng: {
     sectionTitle: "FEATURED",
     sectionSubtitle: "PROJECTS",
     viewCase: "VIEW CASE",
+    stats: [
+      { label: "PROJECTS", value: 12 },
+      { label: "YEARS EXPERIENCE", value: 3 },
+      { label: "TECH STACKS", value: 20 },
+    ],
     projects: [
       {
         title: "Login & CRUD System",
-        desc: "Integrated data management web application with authentication security using Native PHP and MySQL Database.",
+        desc: "Integrated web app with authentication using PHP and MySQL.",
         tags: ["PHP", "MySQL", "Bootstrap"],
         link: "#",
+        image: "/images/login.png",
       },
       {
         title: "E-Commerce Website",
-        desc: "Responsive E-commerce platform with dynamic product catalogs, cart systems, and inventory management.",
+        desc: "Responsive E-commerce platform with dynamic catalog.",
         tags: ["JavaScript", "Tailwind", "Firebase"],
         link: "#",
+        image: "/images/CRUD.png",
       },
       {
         title: "Portfolio Website",
-        desc: "Modern portfolio website with Framer Motion animations, high performance, and SEO optimization using Next.js.",
+        desc: "Modern portfolio with smooth animation and SEO optimization.",
         tags: ["Next.js", "TypeScript", "Framer Motion"],
         link: "#",
-      }
-    ]
+        image: "https://picsum.photos/seed/project3/800/600",
+      },
+    ],
   },
   jpy: {
     sectionTitle: "主な",
     sectionSubtitle: "プロジェクト",
     viewCase: "詳細を見る",
+    stats: [
+      { label: "プロジェクト", value: 12 },
+      { label: "経験年数", value: 3 },
+      { label: "技術スタック", value: 20 },
+    ],
     projects: [
       {
-        title: "ログイン & CRUD システム",
-        desc: "PHP Native と MySQL データベースを使用した、認証セキュリティを備えた統合データ管理 Web アプリケーション。",
+        title: "ログイン & CRUD",
+        desc: "PHP と MySQL を使用した認証付き Web アプリ。",
         tags: ["PHP", "MySQL", "Bootstrap"],
         link: "#",
+        image: "/images/login.png",
       },
       {
         title: "オンラインショップ",
-        desc: "動的な商品カタログ、カートシステム、在庫管理を備えたレスポンシブな E コマースプラットフォーム。",
+        desc: "動的な商品管理が可能な EC サイト。",
         tags: ["JavaScript", "Tailwind", "Firebase"],
         link: "#",
+        image: "/images/CRUD.png",
       },
       {
         title: "ポートフォリオサイト",
-        desc: "Framer Motion アニメーション、高性能、Next.js を使用した SEO 最適化を備えたモダンなポートフォリオサイト。",
+        desc: "Framer Motion を使ったモダンなポートフォリオ。",
         tags: ["Next.js", "TypeScript", "Framer Motion"],
         link: "#",
-      }
-    ]
-  }
+        image: "https://picsum.photos/seed/project3/800/600",
+      },
+    ],
+  },
 };
 
 type Language = "id" | "eng" | "jpy";
 
-function ProjectCard({ item, index, isVisible, theme, viewCaseText }: { item: any, index: number, isVisible: boolean, theme: string, viewCaseText: string }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x);
-  const mouseYSpring = useSpring(y);
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => { x.set(0); y.set(0); };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={isVisible ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, delay: index * 0.2, ease: [0.21, 0.47, 0.32, 0.98] }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      className={`group relative border rounded-2xl p-8 overflow-hidden cursor-default transition-colors duration-500
-        ${theme==="dark" ? "bg-[#111] border-white/5" : "bg-white border-black/10"}`}
-    >
-      <div style={{ transform: "translateZ(50px)" }} className="relative z-10">
-        <span className="absolute -right-10 -top-12 text-9xl font-black text-white/[0.02] italic pointer-events-none group-hover:text-cyan-500/[0.06] transition-colors duration-500">
-          0{index + 1}
-        </span>
-
-        <div className="flex gap-2 mb-6">
-          {item.tags.map((tag: string) => (
-            <span key={tag} className={`text-[10px] font-bold tracking-widest px-3 py-1 rounded-full border transition-colors duration-500
-              ${theme==="dark" 
-                ? "bg-white/5 text-gray-400 border-white/10 group-hover:border-cyan-500/30 group-hover:text-cyan-400"
-                : "bg-black/5 text-gray-700 border-black/10 group-hover:border-blue-400 group-hover:text-blue-500"}`}>
-              {tag}
-            </span>
-          ))}
-        </div>
-
-        <h3 className={`text-2xl font-bold mb-4 transition-colors duration-500 ${theme==="dark" ? "text-white group-hover:text-cyan-400" : "text-black group-hover:text-blue-500"}`}>
-          {item.title}
-        </h3>
-
-        <p className={`text-sm leading-relaxed mb-8 transition-colors duration-500 ${theme==="dark" ? "text-gray-400 group-hover:text-gray-300" : "text-gray-600 group-hover:text-gray-800"}`}>
-          {item.desc}
-        </p>
-
-        <div className="flex items-center gap-6 mt-auto">
-          <a href={item.link} className={`flex items-center gap-2 font-bold text-sm tracking-tighter transition-colors duration-500 ${theme==="dark" ? "text-white group-hover:text-cyan-400" : "text-black group-hover:text-blue-500"}`}>
-            {viewCaseText} <FaExternalLinkAlt size={12} />
-          </a>
-          <a href="#" className={`transition-colors duration-500 ${theme==="dark" ? "text-gray-500 hover:text-white" : "text-gray-500 hover:text-black"}`}>
-            <FaGithub size={20} />
-          </a>
-        </div>
-      </div>
-
-      <div className={`absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-    </motion.div>
-  );
-}
-
 export default function ProjectsSection() {
-  const ref = useRef<HTMLDivElement | null>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [show, setShow] = useState(false);
+  const [showCounter, setShowCounter] = useState(true);
   const [theme, setTheme] = useState("dark");
-  const [isExpanding, setIsExpanding] = useState(false);
-  
-  // 2. STATE BAHASA
   const [lang, setLang] = useState<Language>("id");
+
   const t = translations[lang];
 
+  // Mapping data projects ke format CircularGallery
+  const galleryItems = t.projects.map((p) => ({
+    image: p.image,
+    text: p.title.toUpperCase(),
+  }));
+
+  /* ===== EFFECT: Intersection Observer ===== */
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setShow(true); },
-      { threshold: 0.1 }
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShow(true);
+          setShowCounter(true);
+          setTimeout(() => setShowCounter(false), 2800);
+        }
+      },
+      { threshold: 0.2 }
     );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
   }, []);
 
-  // 3. LISTEN PERUBAHAN BAHASA
+  /* ===== EFFECT: Theme ===== */
   useEffect(() => {
-    const handleLangChange = (e: any) => setLang(e.detail);
-    window.addEventListener("langChanged", handleLangChange);
-    return () => window.removeEventListener("langChanged", handleLangChange);
+    const update = () => setTheme(document.documentElement.getAttribute("data-theme") || "dark");
+    window.addEventListener("themeChanged", update);
+    update();
+    return () => window.removeEventListener("themeChanged", update);
   }, []);
 
+  /* ===== EFFECT: Language ===== */
   useEffect(() => {
-    const handleThemeChange = () => {
-      const current = document.documentElement.getAttribute("data-theme") || "dark";
-      setTheme(current);
-    };
-    window.addEventListener("themeChanged", handleThemeChange);
-    handleThemeChange();
-    return () => window.removeEventListener("themeChanged", handleThemeChange);
-  }, []);
-
-  useEffect(() => {
-    const handleExpandingCircle = () => setIsExpanding(true);
-    window.addEventListener("expandingCircle", handleExpandingCircle);
-    return () => window.removeEventListener("expandingCircle", handleExpandingCircle);
+    const handler = (e: any) => setLang(e.detail);
+    window.addEventListener("langChanged", handler);
+    return () => window.removeEventListener("langChanged", handler);
   }, []);
 
   return (
-    <section ref={ref} id="projects" className={`min-h-screen py-24 flex flex-col items-center justify-center relative overflow-hidden transition-colors duration-700 ${theme==="dark"?"bg-[#0a0a0a]":"bg-white"}`}>
-      
-      {isExpanding && (
-        <div
-          className="absolute z-10 rounded-full pointer-events-none"
-          style={{
-            width:"250vw", height:"250vw", top:"50%", left:"50%",
-            background: theme==="dark"?"#ffffff":"#0a0a0a",
-            transform:"translate(-50%,-50%) scale(0)",
-            transition:"transform 1.2s cubic-bezier(0.4,0,0.2,1), opacity 0.6s ease",
-            opacity:1,
-          }}
-          ref={(el)=>{ if(el) requestAnimationFrame(()=>{ el.style.transform="translate(-50%,-50%) scale(1)"; el.style.opacity="0"; }); }}
-          onTransitionEnd={()=>setIsExpanding(false)}
-        />
-      )}
+    <section
+      ref={ref}
+      id="projects"
+      className={`min-h-screen py-32 relative transition-colors duration-1000 overflow-hidden ${
+        theme === "dark" ? "bg-[#070707] text-white" : "bg-[#fcfcfc] text-black"
+      }`}
+    >
+      {/* Glow Ambient */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-cyan-500/10 blur-[150px] rounded-full" />
+        <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-blue-500/5 blur-[120px] rounded-full" />
+      </div>
 
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="max-w-6xl w-full px-6 relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, x: -50 }}
-          animate={show ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 1 }}
-          className="mb-16"
-        >
-          <h2 className={`text-5xl md:text-7xl font-black tracking-tighter transition-colors duration-500 ${theme==="dark"?"text-white":"text-black"}`}>
-            {t.sectionTitle} <span className={`text-cyan-400`}>{t.sectionSubtitle}</span>
-          </h2>
-          <motion.div 
-            initial={{ width: 0 }}
-            animate={show ? { width: 100 } : {}}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="h-1 bg-cyan-500 mt-4 rounded-full shadow-[0_0_15px_#06b6d4]" 
-          />
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" style={{ perspective: "1000px" }}>
-          {/* Loop menggunakan data dari objek translasi */}
-          {t.projects.map((item, index) => (
-            <ProjectCard 
-              key={item.title} 
-              item={item} 
-              index={index} 
-              isVisible={show} 
-              theme={theme} 
-              viewCaseText={t.viewCase} 
+      <div className="max-w-6xl mx-auto px-6 relative z-10 h-full flex flex-col">
+        {/* HEADER */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8">
+          <div>
+            <motion.div
+              initial={{ width: 0 }}
+              animate={show ? { width: 40 } : {}}
+              className="h-1 bg-cyan-500 mb-4 rounded-full"
             />
-          ))}
+            <motion.h2
+              initial={{ opacity: 0, x: -30 }}
+              animate={show ? { opacity: 1, x: 0 } : {}}
+              className="text-7xl md:text-8xl font-black tracking-tighter leading-none"
+            >
+              {t.sectionTitle} <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 italic font-light lowercase">
+                {t.sectionSubtitle}.
+              </span>
+            </motion.h2>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={show ? { opacity: 1 } : {}}
+            className="flex items-center gap-6"
+          >
+            <div className="h-[1px] w-24 bg-current opacity-10 hidden lg:block" />
+            <p className="text-[10px] font-bold tracking-[0.5em] uppercase opacity-40">Drag to explore</p>
+          </motion.div>
+        </div>
+
+        {/* CONTENT */}
+        <div className="flex-grow min-h-[600px] flex items-center justify-center relative">
+          <AnimatePresence mode="wait">
+            {showCounter ? (
+              <motion.div
+                key="counter"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, filter: "blur(20px)", y: -40 }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                className="grid grid-cols-1 md:grid-cols-3 gap-16 w-full"
+              >
+                {t.stats.map((s) => (
+                  <div key={s.label} className="text-center group">
+                    <h3 className="text-8xl md:text-9xl font-black text-cyan-500 tracking-tighter transition-transform duration-500 group-hover:scale-105">
+                      <CountUp end={s.value} duration={2.5} />
+                      <span className="text-white opacity-20">+</span>
+                    </h3>
+                    <p className="text-xs tracking-[0.4em] uppercase text-gray-500 mt-6 font-bold">
+                      {s.label}
+                    </p>
+                  </div>
+                ))}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="circular"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1 }}
+                className="w-full h-[600px]"
+              >
+                <CircularGallery
+                  items={galleryItems}
+                  bend={3}
+                  textColor={theme === "dark" ? "#ffffff" : "#000000"}
+                  borderRadius={0.08}
+                  font="bold 30px Figtree"
+                  dragOnly={true} // Hanya drag, scroll halaman tidak mempengaruhi
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>
