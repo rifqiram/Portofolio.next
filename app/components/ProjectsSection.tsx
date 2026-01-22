@@ -239,7 +239,7 @@ export default function ProjectsSection() {
                   textColor={theme === "dark" ? "#ffffff" : "#000000"}
                   borderRadius={0.08}
                   font="bold 30px Figtree"
-                  dragOnly={true} // Hanya drag, scroll halaman tidak mempengaruhi
+                  dragOnly={true} 
                 />
               </motion.div>
             )}
