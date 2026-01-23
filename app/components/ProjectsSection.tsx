@@ -243,7 +243,8 @@ export default function ProjectsSection() {
                 />
               </motion.div>
             )}
-          </AnimatePresence>
+          </AnimatePresence>  
+          {/* anu */}
         </div>
       </div>
     </section>
