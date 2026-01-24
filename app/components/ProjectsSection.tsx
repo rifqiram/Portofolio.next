@@ -3,13 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CountUp from "react-countup";
-import CircularGallery from "@/components/CircularGallery"; // Pastikan path benar
+import ChromaGrid from '@/app/components/ChromaGrid/ChromaGrid';
 
 /* ================= TRANSLATION ================= */
 const translations = {
   id: {
     sectionTitle: "PROYEK",
-    sectionSubtitle: "UNGGULAN",
+    sectionSubtitle: "SAYA",
     viewCase: "LIHAT DETAIL",
     stats: [
       { label: "PROJECTS", value: 12 },
@@ -18,30 +18,30 @@ const translations = {
     ],
     projects: [
       {
-        title: "Sistem Login & CRUD",
-        desc: "Aplikasi web manajemen data dengan autentikasi menggunakan PHP Native dan MySQL.",
-        tags: ["PHP", "MySQL", "Bootstrap"],
+        title: "Sistem Toko & Manajemen Data",
+        desc: "Aplikasi berbasis web dengan fitur CRUD lengkap untuk pengelolaan produk dan data transaksi. Dilengkapi sistem autentikasi Login Admin dan User, validasi data, serta manajemen database terstruktur menggunakan MySQL. Dibangun dengan HTML, CSS, JavaScript, dan PHP Native untuk performa yang ringan dan stabil.",
+        tags: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"],
         link: "#",
-        image: "/images/login.png",
+        image: "/images/StoreSistem.png",
       },
       {
-        title: "Website Toko Online",
-        desc: "Platform E-commerce responsif dengan katalog produk dinamis.",
-        tags: ["JavaScript", "Tailwind", "Firebase"],
-        link: "#",
-        image: "/images/CRUD.png",
+        title: "Website Portofolio Interaktif",
+        desc: "Website portofolio personal yang menampilkan identitas, skill, dan proyek secara visual dan interaktif. Menggunakan animasi modern berbasis React Bits, GSAP, dan Framer Motion untuk menciptakan pengalaman pengguna yang smooth, dinamis, dan responsif. Dibangun dengan Next.js untuk performa optimal dan SEO yang baik.",
+        tags: ["Next.js", "GSAP", "Framer Motion", "React"],
+        link: "https://rifqiram.vercel.app/",
+        image: "/images/Portofolio.png",
       },
       {
-        title: "Website Portofolio",
-        desc: "Portofolio modern dengan animasi Framer Motion dan optimasi SEO.",
-        tags: ["Next.js", "TypeScript", "Framer Motion"],
+        title: "Sistem Manajemen Internal",
+        desc: "Aplikasi manajemen internal berbasis Laravel dengan fitur CRUD, autentikasi Login Admin dan Staff, serta sistem role-based access control. Setiap role memiliki tampilan dan hak akses berbeda. Menggunakan Laravel, PHP, JavaScript, dan Bootstrap untuk pengelolaan data yang aman, terstruktur, dan mudah dikembangkan.",
+        tags: ["Laravel", "PHP", "JavaScript", "Bootstrap", "MySQL"],
         link: "#",
-        image: "https://picsum.photos/seed/project3/800/600",
+        image: "/images/ManajemenSistem.png",
       },
     ],
   },
   eng: {
-    sectionTitle: "FEATURED",
+    sectionTitle: "MY",
     sectionSubtitle: "PROJECTS",
     viewCase: "VIEW CASE",
     stats: [
@@ -51,30 +51,30 @@ const translations = {
     ],
     projects: [
       {
-        title: "Login & CRUD System",
-        desc: "Integrated web app with authentication using PHP and MySQL.",
-        tags: ["PHP", "MySQL", "Bootstrap"],
+        title: "Store & Data Management System",
+        desc: "A web-based application featuring full CRUD functionality for managing products and transactions. Includes Admin and User authentication, data validation, and a structured MySQL database. Built using HTML, CSS, JavaScript, and native PHP for a lightweight and reliable system.",
+        tags: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"],
         link: "#",
-        image: "/images/login.png",
+        image: "/images/StoreSistem.png",
       },
       {
-        title: "E-Commerce Website",
-        desc: "Responsive E-commerce platform with dynamic catalog.",
-        tags: ["JavaScript", "Tailwind", "Firebase"],
-        link: "#",
-        image: "/images/CRUD.png",
+        title: "Interactive Portfolio Website",
+        desc: "A personal portfolio website showcasing identity, skills, and projects through interactive visuals. Powered by modern animations using React Bits, GSAP, and Framer Motion. Built with Next.js to ensure smooth performance, responsiveness, and SEO optimization.",
+        tags: ["Next.js", "GSAP", "Framer Motion", "React"],
+        link: "https://rifqiram.vercel.app/",
+        image: "/images/Portofolio.png",
       },
       {
-        title: "Portfolio Website",
-        desc: "Modern portfolio with smooth animation and SEO optimization.",
-        tags: ["Next.js", "TypeScript", "Framer Motion"],
+        title: "Internal Management System",
+        desc: "An internal management application built with Laravel featuring CRUD operations, Admin and Staff authentication, and role-based layouts. Each role has different access levels and interfaces, ensuring secure and structured data management.",
+        tags: ["Laravel", "PHP", "JavaScript", "Bootstrap", "MySQL"],
         link: "#",
-        image: "https://picsum.photos/seed/project3/800/600",
+        image: "/images/ManajemenSistem.png",
       },
     ],
   },
   jpy: {
-    sectionTitle: "主な",
+    sectionTitle: "私",
     sectionSubtitle: "プロジェクト",
     viewCase: "詳細を見る",
     stats: [
@@ -84,25 +84,25 @@ const translations = {
     ],
     projects: [
       {
-        title: "ログイン & CRUD",
-        desc: "PHP と MySQL を使用した認証付き Web アプリ。",
-        tags: ["PHP", "MySQL", "Bootstrap"],
+        title: "店舗管理 & CRUD システム",
+        desc: "商品や取引データを管理するための CRUD 機能を備えた Web アプリケーション。管理者とユーザーのログイン機能、データ検証、MySQL による構造化されたデータ管理を実装しています。",
+        tags: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"],
         link: "#",
-        image: "/images/login.png",
+        image: "/images/StoreSistem.png",
       },
       {
-        title: "オンラインショップ",
-        desc: "動的な商品管理が可能な EC サイト。",
-        tags: ["JavaScript", "Tailwind", "Firebase"],
-        link: "#",
-        image: "/images/CRUD.png",
+        title: "インタラクティブ ポートフォリオ",
+        desc: "React、GSAP、Framer Motion を活用したアニメーション重視のポートフォリオサイト。Next.js により高速表示と SEO 最適化を実現しています。",
+        tags: ["Next.js", "GSAP", "Framer Motion", "React"],
+        link: "https://rifqiram.vercel.app/",
+        image: "/images/Portofolio.png",
       },
       {
-        title: "ポートフォリオサイト",
-        desc: "Framer Motion を使ったモダンなポートフォリオ。",
-        tags: ["Next.js", "TypeScript", "Framer Motion"],
+        title: "社内管理システム",
+        desc: "Laravel を使用した社内向け管理システム。CRUD 機能、管理者・スタッフのログイン、ロール別レイアウトを備え、安全で拡張性の高い構成になっています。",
+        tags: ["Laravel", "PHP", "JavaScript", "Bootstrap", "MySQL"],
         link: "#",
-        image: "https://picsum.photos/seed/project3/800/600",
+        image: "/images/ManajemenSistem.png",
       },
     ],
   },
@@ -119,13 +119,18 @@ export default function ProjectsSection() {
 
   const t = translations[lang];
 
-  // Mapping data projects ke format CircularGallery
-  const galleryItems = t.projects.map((p) => ({
+  const gridItems = t.projects.map((p) => ({
     image: p.image,
-    text: p.title.toUpperCase(),
+    title: p.title.toUpperCase(),
+    subtitle: p.desc,
+    handle: p.tags.join(", "),
+    borderColor: theme === "dark" ? "#06b6d4" : "#3b82f6",
+    gradient: theme === "dark"
+      ? "linear-gradient(145deg, #06b6d4, #000)"
+      : "linear-gradient(145deg, #3b82f6, #fff)",
+    url: p.link,
   }));
 
-  /* ===== EFFECT: Intersection Observer ===== */
   useEffect(() => {
     const obs = new IntersectionObserver(
       ([entry]) => {
@@ -140,8 +145,7 @@ export default function ProjectsSection() {
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
-
-  /* ===== EFFECT: Theme ===== */
+  
   useEffect(() => {
     const update = () => setTheme(document.documentElement.getAttribute("data-theme") || "dark");
     window.addEventListener("themeChanged", update);
@@ -149,7 +153,6 @@ export default function ProjectsSection() {
     return () => window.removeEventListener("themeChanged", update);
   }, []);
 
-  /* ===== EFFECT: Language ===== */
   useEffect(() => {
     const handler = (e: any) => setLang(e.detail);
     window.addEventListener("langChanged", handler);
@@ -164,14 +167,12 @@ export default function ProjectsSection() {
         theme === "dark" ? "bg-[#070707] text-white" : "bg-[#fcfcfc] text-black"
       }`}
     >
-      {/* Glow Ambient */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
         <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-cyan-500/10 blur-[150px] rounded-full" />
         <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-blue-500/5 blur-[120px] rounded-full" />
       </div>
 
       <div className="max-w-6xl mx-auto px-6 relative z-10 h-full flex flex-col">
-        {/* HEADER */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8">
           <div>
             <motion.div
@@ -201,7 +202,6 @@ export default function ProjectsSection() {
           </motion.div>
         </div>
 
-        {/* CONTENT */}
         <div className="flex-grow min-h-[600px] flex items-center justify-center relative">
           <AnimatePresence mode="wait">
             {showCounter ? (
@@ -227,24 +227,22 @@ export default function ProjectsSection() {
               </motion.div>
             ) : (
               <motion.div
-                key="circular"
+                key="chroma"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1 }}
-                className="w-full h-[600px]"
+                className="w-full h-[600px] relative"
               >
-                <CircularGallery
-                  items={galleryItems}
-                  bend={3}
-                  textColor={theme === "dark" ? "#ffffff" : "#000000"}
-                  borderRadius={0.08}
-                  font="bold 30px Figtree"
-                  dragOnly={true} 
+                <ChromaGrid
+                  items={gridItems}
+                  radius={300}
+                  damping={0.45}
+                  fadeOut={0.6}
+                  ease="power3.out"
                 />
               </motion.div>
             )}
-          </AnimatePresence>  
-          {/* anu */}
+          </AnimatePresence>
         </div>
       </div>
     </section>
