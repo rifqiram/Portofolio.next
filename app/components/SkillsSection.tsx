@@ -8,18 +8,18 @@ import { SiNextdotjs, SiTailwindcss, SiTypescript } from "react-icons/si";
 const translations = {
   id: {
     subtitle: "Keahlian Saya",
-    title1: "Teknologi",
-    title2: "Unggulan",
+    title1: "Teknologi &",
+    title2: "Peralatan",
   },
   eng: {
     subtitle: "My Skills",
-    title1: "Tech",
-    title2: "Stack",
+    title1: "Tools &",
+    title2: "Technology",
   },
   jpy: {
     subtitle: "スキル",
-    title1: "技術",
-    title2: "スタック",
+    title1: "ツール &",
+    title2: "テクノロジー",
   },
 };
 
