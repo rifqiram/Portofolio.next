@@ -7,6 +7,8 @@ import CertificateSection from "./components/CertificateSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 
+
+// absen pak
 export default function Home() {
   return (
     <main className="bg-[#0a0a0a]">
