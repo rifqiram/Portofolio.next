@@ -8,7 +8,7 @@ import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 
 
-// Main Page Component | Absen
+// Main Page Component 
 export default function Home() {
   return (
     <main className="bg-[#0a0a0a]">
