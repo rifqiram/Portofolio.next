@@ -8,7 +8,7 @@ import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 
 
-// Main Page 
+// Main Page senin lekku
 
 export default function Home() {
   return (
