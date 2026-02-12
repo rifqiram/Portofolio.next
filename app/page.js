@@ -8,7 +8,7 @@ import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 
 
-// Main Page 
+// Main Page hadir om
 
 export default function Home() {
   return (
