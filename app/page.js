@@ -8,7 +8,7 @@ import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 
 
-// Main Page ini adalah anulah pokoknya
+// Main Page 
 
 export default function Home() {
   return (
