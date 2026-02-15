@@ -8,7 +8,7 @@ import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 
 
-// Main Page liburan update
+// Main Page 
 
 export default function Home() {
   return (
